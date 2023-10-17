@@ -75,18 +75,13 @@
             </tr>
           </tfoot>
         </table>
-        <table v-if="cargando" class="tabla-carga">
-          <tr v-for="index in 10" :key="index">
-            <td class="esqueleto"></td>
-            <td class="esqueleto"></td>
-            <td class="esqueleto"></td>
-            <td class="esqueleto"></td>
-            <td class="esqueleto"></td>
-            <td class="esqueleto"></td>
-            <td class="esqueleto"></td>
-            <td class="esqueleto"></td>
-          </tr>
-        </table>
+
+        <div v-if="cargando" class="loader">
+          <img src="../assets/logo.svg" alt="Logo" class="svglogo" />
+
+          <div class="text">Cargando...</div>
+        </div>
+
         <br />
 
         <span v-if="!cargando && sinResultados">¡Sin resultados!</span>
@@ -346,20 +341,38 @@ th {
   background: var(--aqua-back);
 }
 
-.tabla-carga {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid var(--white);
+.svglogo {
+  color: #fff;
+  animation: rotate 7s linear infinite;
+  background: linear-gradient(
+    144deg,
+    var(--aqua-input),
+    #086848 50%,
+    var(--aqua-back)
+  );
+  border-radius: 50%;
+  padding: 1.2em;
+  width: 95px;
+  margin: 0 auto;
+  display: block;
+  margin-top: 20vh;
 }
 
-.tabla-carga table td,
-th {
-  padding: 0.7em;
+.text {
+  font-size: 1.4em;
+  color: var(--white);
+  text-align: center;
+  margin-top: 1em;
+  font-weight: 500;
 }
 
-.esqueleto {
-  height: 20px; /* Altura de fila de esqueleto */
-  background-color: var(--aqua-back); /* Color de fondo gris para esqueleto */
-  border-top: 1px solid var(--aqua-input);
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
