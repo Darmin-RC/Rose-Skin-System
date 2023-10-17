@@ -20,7 +20,10 @@
       >Seleccionar Recomendación Existente:</label
     >
     <select v-model="selectedRecomendacion" id="seleccionRecomendacion">
-      <option value="">Seleccione una recomendación</option>
+      <option value="">
+        Seleccione una recomendación para tratar:
+        {{ pacienteEditado.diagnostico }}
+      </option>
       <option
         v-for="recomendacion in recomendaciones"
         :value="recomendacion.id"
@@ -197,6 +200,16 @@ export default {
   padding: 0.5em;
   margin: 0.1em;
   font-size: 1em;
+}
+
+.editar-paciente select {
+  border: solid 1px var(--white);
+  border-radius: 1em;
+  padding: 0.3em;
+  background: var(--aqua-back);
+  color: var(--white);
+  font-size: 1em;
+  outline: none;
 }
 
 .buttons {
