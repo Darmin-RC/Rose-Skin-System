@@ -1,7 +1,6 @@
 <template>
   <div class="dashboard">
     <div class="table">
-      <h2>Dashboard</h2>
       <div class="menu">
         <div class="total">
           <h4>Pacientes totales: {{ pacientes.length }}</h4>
@@ -10,7 +9,7 @@
           <input
             type="search"
             v-model="filtroNombre"
-            placeholder="Buscar pacientes por nombre..."
+            placeholder="Buscar pacientes por nombre o Teléfono..."
           />
           <button @click="buscarPacientes">
             <i class="fa fa-search" style="font-size: 1.3em"></i>
@@ -226,10 +225,21 @@ export default {
         return;
       }
 
-      // Filtrar pacientes por nombre
-      this.pacientes = this.pacientes.filter((paciente) =>
-        paciente.nombre.toLowerCase().includes(this.filtroNombre.toLowerCase())
-      );
+      // Filtrar pacientes por nombre o número de teléfono
+      this.pacientes = this.pacientes.filter((paciente) => {
+        const nombreEnMinusculas = paciente.nombre.toLowerCase();
+        const telefonoEnTexto = paciente.telefono
+          ? paciente.telefono.toString()
+          : ""; // Convertir a texto si existe el número de teléfono
+        const telefonoEnMinusculas = telefonoEnTexto.toLowerCase();
+        const filtroEnMinusculas = this.filtroNombre.toLowerCase();
+
+        return (
+          nombreEnMinusculas.includes(filtroEnMinusculas) ||
+          telefonoEnMinusculas.includes(filtroEnMinusculas)
+        );
+      });
+
       this.sinResultados = this.pacientes.length === 0;
     },
   },
