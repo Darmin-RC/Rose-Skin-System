@@ -61,19 +61,19 @@
 
       <h2>Recomendación</h2>
       <label for="limpiadora">Limpiadora:</label>
-      <input v-model="limpiadora" type="text" id="limpiadora" required />
+      <input v-model="limpiadora" type="text" id="limpiadora" />
       <label for="filtro">Filtro:</label>
-      <input v-model="filtro" type="text" id="filtro" required />
+      <input v-model="filtro" type="text" id="filtro" />
       <label for="cremaDia">Crema de día o hidratante:</label>
-      <input v-model="cremaDia" type="text" id="cremaDia" required />
+      <input v-model="cremaDia" type="text" id="cremaDia" />
       <label for="contorno">Contorno:</label>
-      <input v-model="contorno" type="text" id="contorno" required />
+      <input v-model="contorno" type="text" id="contorno" />
       <label for="cremaNoche">Crema de noche:</label>
-      <input v-model="cremaNoche" type="text" id="cremaNoche" required />
+      <input v-model="cremaNoche" type="text" id="cremaNoche" />
       <label for="blanqueadora">Blanqueadora:</label>
-      <input v-model="blanqueadora" type="text" id="blanqueadora" required />
+      <input v-model="blanqueadora" type="text" id="blanqueadora" />
       <label for="proceso">Proceso:</label>
-      <textarea v-model="proceso" id="proceso" cols="30" rows="5" required />
+      <textarea v-model="proceso" id="proceso" cols="30" rows="5" />
 
       <div class="buttons">
         <button type="button" style="background: var(--red)" @click="cancelar">

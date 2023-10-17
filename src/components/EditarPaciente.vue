@@ -15,6 +15,21 @@
     <!-- Agrega más campos según sea necesario -->
     <br />
     <h2>Editar Recomendación</h2>
+    <br />
+    <label for="seleccionRecomendacion"
+      >Seleccionar Recomendación Existente:</label
+    >
+    <select v-model="selectedRecomendacion" id="seleccionRecomendacion">
+      <option value="">Seleccione una recomendación</option>
+      <option
+        v-for="recomendacion in recomendaciones"
+        :value="recomendacion.id"
+        :key="recomendacion.id"
+      >
+        {{ recomendacion.nombre }}
+      </option>
+    </select>
+    <br />
     <label for="limpiadora">Limpiadora:</label>
     <input v-model="pacienteEditado.limpiadora" type="text" id="limpiadora" />
     <label for="filtro">Filtro:</label>
@@ -56,8 +71,14 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { updateDoc, doc } from "firebase/firestore";
+import { ref, onMounted } from "vue";
+import {
+  updateDoc,
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 
 export default {
   props: {
@@ -67,8 +88,11 @@ export default {
   data() {
     return {
       pacienteEditado: { ...this.paciente },
+      selectedRecomendacion: "",
+      recomendaciones: [], // Lista de recomendaciones desde la base de datos
     };
   },
+
   watch: {
     paciente: {
       immediate: true,
@@ -76,7 +100,14 @@ export default {
         this.pacienteEditado = { ...newPaciente };
       },
     },
+    selectedRecomendacion(newVal) {
+      if (newVal) {
+        // Cargar datos de la recomendación seleccionada y llenar los campos
+        this.cargarDatosRecomendacion(newVal);
+      }
+    },
   },
+
   methods: {
     cancelarEdicion() {
       this.$emit("cancelar");
@@ -99,6 +130,42 @@ export default {
         console.error("No se ha seleccionado un paciente para editar.");
       }
     },
+    async cargarDatosRecomendacion(recomendacionId) {
+      try {
+        const recomendacionRef = doc(this.db, "pacientes", recomendacionId);
+        const recomendacionData = (await getDoc(recomendacionRef)).data();
+
+        // Asignar los valores de la recomendación seleccionada a los campos de edición de recomendación
+        this.pacienteEditado.limpiadora = recomendacionData.limpiadora || "";
+        this.pacienteEditado.filtro = recomendacionData.filtro || "";
+        this.pacienteEditado.cremaDia = recomendacionData.cremaDia || "";
+        this.pacienteEditado.contorno = recomendacionData.contorno || "";
+        this.pacienteEditado.cremaNoche = recomendacionData.cremaNoche || "";
+        this.pacienteEditado.blanqueadora =
+          recomendacionData.blanqueadora || "";
+        this.pacienteEditado.proceso = recomendacionData.proceso || "";
+      } catch (error) {
+        console.error("Error al cargar los datos de la recomendación:", error);
+      }
+    },
+  },
+
+  async created() {
+    // Cargar las recomendaciones disponibles al iniciar el componente
+    try {
+      const recomendacionesCollection = collection(this.db, "pacientes");
+      const recomendacionesSnapshot = await getDocs(recomendacionesCollection);
+
+      this.recomendaciones = recomendacionesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        nombre: doc.data().nombre, // Asegúrate de que esto coincida con la estructura de tus documentos de pacientes
+      }));
+    } catch (error) {
+      console.error(
+        "Error al cargar las recomendaciones desde Firebase:",
+        error
+      );
+    }
   },
 };
 </script>
