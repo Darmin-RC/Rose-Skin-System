@@ -13,6 +13,32 @@
     <input v-model="pacienteEditado.medicamento" type="text" id="medicamento" />
 
     <!-- Agrega más campos según sea necesario -->
+    <br />
+    <h2>Editar Recomendación</h2>
+    <label for="limpiadora">Limpiadora:</label>
+    <input v-model="pacienteEditado.limpiadora" type="text" id="limpiadora" />
+    <label for="filtro">Filtro:</label>
+    <input v-model="pacienteEditado.filtro" type="text" id="filtro" />
+    <label for="cremaDia">Crema de día o hidratante:</label>
+    <input v-model="pacienteEditado.cremaDia" type="text" id="cremaDia" />
+    <label for="contorno">Contorno:</label>
+    <input v-model="pacienteEditado.contorno" type="text" id="contorno" />
+    <label for="cremaNoche">Crema de noche:</label>
+    <input v-model="pacienteEditado.cremaNoche" type="text" id="cremaNoche" />
+    <label for="blanqueadora">Blanqueadora:</label>
+    <input
+      v-model="pacienteEditado.blanqueadora"
+      type="text"
+      id="blanqueadora"
+    />
+    <label for="proceso">Proceso:</label>
+    <textarea
+      v-model="pacienteEditado.proceso"
+      type="text"
+      id="proceso"
+      cols="30"
+      rows="5"
+    ></textarea>
 
     <div class="buttons">
       <button style="background: var(--red)" @click="cancelarEdicion">
@@ -96,6 +122,13 @@ export default {
 .editar-paciente input {
   padding: 0.5em 0.8em;
   margin-top: 0.3em;
+  font-size: 1em;
+}
+
+.editar-paciente textarea {
+  width: 100%;
+  padding: 0.5em;
+  margin: 0.1em;
   font-size: 1em;
 }
 

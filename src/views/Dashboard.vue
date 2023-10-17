@@ -31,6 +31,7 @@
             <th>Teléfono</th>
             <th>Edad</th>
             <th>Medicamento</th>
+            <th>Recomendación</th>
             <th>Editar</th>
             <th>Eliminar</th>
           </tr>
@@ -40,6 +41,9 @@
             <td>{{ paciente.telefono }}</td>
             <td>{{ paciente.edad }}</td>
             <td>{{ paciente.medicamento }}</td>
+            <td>
+              {{ paciente.proceso ? "Tiene" : "No Tiene" }}
+            </td>
             <td>
               <button
                 style="color: var(--green)"
@@ -58,6 +62,7 @@
             </td>
           </tr>
         </table>
+
         <EditarPaciente
           v-if="mostrarFormularioEditar && pacienteSeleccionado"
           :paciente="pacienteSeleccionado"
@@ -107,6 +112,13 @@ export default {
       diagnostico: doc.data().diagnostico,
       medicamento: doc.data().medicamento,
       telefono: doc.data().telefono,
+      limpiadora: doc.data().limpiadora,
+      filtro: doc.data().filtro,
+      cremaDia: doc.data().cremaDia,
+      contorno: doc.data().contorno,
+      cremaNoche: doc.data().cremaNoche,
+      blanqueadora: doc.data().blanqueadora,
+      proceso: doc.data().proceso,
     }));
   },
   methods: {
@@ -137,6 +149,13 @@ export default {
         diagnostico: doc.data().diagnostico,
         medicamento: doc.data().medicamento,
         telefono: doc.data().telefono,
+        limpiadora: doc.data().limpiadora,
+        filtro: doc.data().filtro,
+        cremaDia: doc.data().cremaDia,
+        contorno: doc.data().contorno,
+        cremaNoche: doc.data().cremaNoche,
+        blanqueadora: doc.data().blanqueadora,
+        proceso: doc.data().proceso,
       }));
     },
     seleccionarTodos() {

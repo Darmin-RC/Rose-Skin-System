@@ -1,43 +1,84 @@
 <template>
   <div class="form">
     <h2>Datos del Paciente</h2>
-    <form @submit.prevent="submitForm">
+    <form @submit.prevent="guardarDatos">
       <label for="nombre">Nombre y Apellido:</label>
-      <input v-model="formData.nombre" type="text" id="nombre" />
+      <input v-model="formData.nombre" type="text" id="nombre" required />
       <label for="edad">Edad:</label>
-      <input v-model="formData.edad" type="number" id="edad" />
+      <input v-model="formData.edad" type="number" id="edad" required />
       <label for="telefono">Teléfono:</label>
-      <input v-model="formData.telefono" type="tel" id="telefono" />
+      <input v-model="formData.telefono" type="tel" id="telefono" required />
       <label for="medicamento">Medicamento que utiliza actualmente:</label>
-      <input v-model="formData.medicamento" type="text" id="medicamento" />
+      <input
+        v-model="formData.medicamento"
+        type="text"
+        id="medicamento"
+        required
+      />
       <label for="recomendado">Recomendado por:</label>
-      <input v-model="formData.recomendado" type="text" id="recomendado" />
+      <input
+        v-model="formData.recomendado"
+        type="text"
+        id="recomendado"
+        required
+      />
       <label for="anticonceptivo">¿Algún anticonceptivo?</label>
       <input
         v-model="formData.anticonceptivo"
         type="text"
         id="anticonceptivo"
+        required
       />
       <label for="alergias">¿Alergias?</label>
-      <input v-model="formData.alergias" type="text" id="alergias" />
+      <input v-model="formData.alergias" type="text" id="alergias" required />
       <label for="diagnostico">Enfermedad diagnosticada:</label>
-      <input v-model="formData.diagnostico" type="text" id="diagnostico" />
+      <input
+        v-model="formData.diagnostico"
+        type="text"
+        id="diagnostico"
+        required
+      />
       <label for="piel">Tipo de piel:</label>
-      <input v-model="formData.piel" type="text" id="piel" />
-      <label for="sensibilidad">Sensibilidad y Fotoripo:</label>
-      <input v-model="formData.sensibilidad" type="text" id="sensibilidad" />
+      <input v-model="formData.piel" type="text" id="piel" required />
+      <label for="sensibilidad">Sensibilidad y Fototipo:</label>
+      <input
+        v-model="formData.sensibilidad"
+        type="text"
+        id="sensibilidad"
+        required
+      />
       <label for="afeccion">Afección diagnosticada:</label>
-      <input v-model="formData.afeccion" type="text" id="afeccion" />
+      <input v-model="formData.afeccion" type="text" id="afeccion" required />
       <label for="tratamiento">Plan de tratamiento:</label>
       <textarea
         v-model="formData.tratamiento"
         id="tratamiento"
         cols="30"
         rows="5"
-      ></textarea>
+        required
+      />
+      <br />
+
+      <h2>Recomendación</h2>
+      <label for="limpiadora">Limpiadora:</label>
+      <input v-model="limpiadora" type="text" id="limpiadora" required />
+      <label for="filtro">Filtro:</label>
+      <input v-model="filtro" type="text" id="filtro" required />
+      <label for="cremaDia">Crema de día o hidratante:</label>
+      <input v-model="cremaDia" type="text" id="cremaDia" required />
+      <label for="contorno">Contorno:</label>
+      <input v-model="contorno" type="text" id="contorno" required />
+      <label for="cremaNoche">Crema de noche:</label>
+      <input v-model="cremaNoche" type="text" id="cremaNoche" required />
+      <label for="blanqueadora">Blanqueadora:</label>
+      <input v-model="blanqueadora" type="text" id="blanqueadora" required />
+      <label for="proceso">Proceso:</label>
+      <textarea v-model="proceso" id="proceso" cols="30" rows="5" required />
 
       <div class="buttons">
-        <button type="button" style="background: var(--red)">Cancelar</button>
+        <button type="button" style="background: var(--red)" @click="cancelar">
+          Cancelar
+        </button>
         <button type="submit" style="background: var(--blue)">Guardar</button>
       </div>
     </form>
@@ -64,16 +105,32 @@ export default {
       sensibilidad: "",
       telefono: null,
       tratamiento: "",
-      // Agrega más campos según tus necesidades
     });
 
-    const submitForm = async () => {
+    const limpiadora = ref("");
+    const filtro = ref("");
+    const cremaDia = ref("");
+    const contorno = ref("");
+    const cremaNoche = ref("");
+    const blanqueadora = ref("");
+    const proceso = ref("");
+
+    const guardarDatos = async () => {
       try {
-        const docRef = await addDoc(
-          collection(db, "pacientes"),
-          formData.value
-        );
+        const pacienteData = {
+          ...formData.value,
+          limpiadora: limpiadora.value,
+          filtro: filtro.value,
+          cremaDia: cremaDia.value,
+          contorno: contorno.value,
+          cremaNoche: cremaNoche.value,
+          blanqueadora: blanqueadora.value,
+          proceso: proceso.value,
+        };
+
+        const docRef = await addDoc(collection(db, "pacientes"), pacienteData);
         console.log("Documento ID:", docRef.id);
+
         // Limpia el formulario después de enviar los datos
         formData.value = {
           afeccion: "",
@@ -88,16 +145,58 @@ export default {
           sensibilidad: "",
           telefono: null,
           tratamiento: "",
-          // Agrega más campos según tus necesidades
         };
+
+        // Limpia los campos de recomendación
+        limpiadora.value = "";
+        filtro.value = "";
+        cremaDia.value = "";
+        contorno.value = "";
+        cremaNoche.value = "";
+        blanqueadora.value = "";
+        proceso.value = "";
       } catch (error) {
         console.error("Error al guardar en Firebase:", error);
       }
     };
 
+    const cancelar = () => {
+      // Limpia los campos de datos del paciente y recomendación
+      formData.value = {
+        afeccion: "",
+        alergias: "",
+        anticonceptivo: "",
+        diagnostico: "",
+        edad: null,
+        medicamento: "",
+        nombre: "",
+        piel: "",
+        recomendado: "",
+        sensibilidad: "",
+        telefono: null,
+        tratamiento: "",
+      };
+
+      limpiadora.value = "";
+      filtro.value = "";
+      cremaDia.value = "";
+      contorno.value = "";
+      cremaNoche.value = "";
+      blanqueadora.value = "";
+      proceso.value = "";
+    };
+
     return {
       formData,
-      submitForm,
+      limpiadora,
+      filtro,
+      cremaDia,
+      contorno,
+      cremaNoche,
+      blanqueadora,
+      proceso,
+      guardarDatos,
+      cancelar,
     };
   },
 };
